@@ -1,0 +1,37 @@
+** Initial layout
+
+
+Rock Paper Scissors Banner
+
+Waiting for Player 1
+
+Waiting for Player 2
+
+Message area.
+
+Nothing in the Database
+
+
+After first login the first players area says Pavan and has buttons for Rock Paper Scissors
+
+It also has Wins: 0 Losses: 0
+
+
+** States
+
+*** Waiting for Player 1
+
+No players exist in the database. The input box with Name and Start button appears below the banner.
+
+Stuff moves after Player 1 enters their name.
+
+*** Waiting for Player 2
+
+
+Player 1 info is displayed
+
+Name input is replaced with waiting for another player message.
+
+Blank player areas
+
+Waiting for Player
