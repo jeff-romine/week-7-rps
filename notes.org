@@ -1,6 +1,5 @@
 ** Initial layout
 
-
 Rock Paper Scissors Banner
 
 Waiting for Player 1
@@ -11,11 +10,9 @@ Message area.
 
 Nothing in the Database
 
-
 After first login the first players area says Pavan and has buttons for Rock Paper Scissors
 
 It also has Wins: 0 Losses: 0
-
 
 ** States
 
@@ -24,6 +21,10 @@ It also has Wins: 0 Losses: 0
 No players exist in the database. The input box with Name and Start button appears below the banner.
 
 Stuff moves after Player 1 enters their name.
+
+#+BEGIN_SRC javascript
+
+#+END_SRC
 
 *** Waiting for Player 2
 
@@ -35,3 +36,21 @@ Name input is replaced with waiting for another player message.
 Blank player areas
 
 Waiting for Player
+
+#+BEGIN_SRC html
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDubMwzxuMjnS07DXPxfNFbTV381rFTbus",
+    authDomain: "multi-rps-57eb9.firebaseapp.com",
+    databaseURL: "https://multi-rps-57eb9.firebaseio.com",
+    projectId: "multi-rps-57eb9",
+    storageBucket: "",
+    messagingSenderId: "473504819417"
+  };
+  firebase.initializeApp(config);
+</script>
+COPY
+
+#+END_SRC

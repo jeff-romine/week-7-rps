@@ -1,42 +1,165 @@
 // Initialize Firebase
+
 var config = {
-    apiKey: "AIzaSyAY6D5duYTAbfO0zz9GZDLA7F0VdaHSpQw",
-    authDomain: "sandbox-b4c75.firebaseapp.com",
-    databaseURL: "https://sandbox-b4c75.firebaseio.com",
-    projectId: "sandbox-b4c75",
-    storageBucket: "sandbox-b4c75.appspot.com",
-    messagingSenderId: "85762222100"
+  apiKey: "AIzaSyDubMwzxuMjnS07DXPxfNFbTV381rFTbus",
+  authDomain: "multi-rps-57eb9.firebaseapp.com",
+  databaseURL: "https://multi-rps-57eb9.firebaseio.com",
+  projectId: "multi-rps-57eb9",
+  storageBucket: "",
+  messagingSenderId: "473504819417"
 };
 
 firebase.initializeApp(config);
 
 var database = firebase.database();
-//
-// $("#submit").click(function () {
-//     var result = database.ref().push(
-//         {
-//             name: $("#name").val(),
-//             role: $("#role").val(),
-//             startDate: $("#start-date").val(),
-//             rate: $("#rate").val(),
-//             dateAdded: firebase.database.ServerValue.TIMESTAMP
-//         });
-//     console.log("result: " + result);
-// });
-//
-// database.ref().on("child_added", function(snapshot)
-//     {
-//         console.log(snapshot.key + ": " + JSON.stringify(snapshot,null,'\t'));
-//         var tr = $("<tr>").attr("id",snapshot.key);
-//         var child = snapshot.val();
-//
-//         $(tr).append($("<td>").text(child.name));
-//         $(tr).append($("<td>").text(child.role));
-//         $(tr).append($("<td>").text(child.startDate));
-//         $(tr).append($("<td>").text("months-worked"));
-//         $(tr).append($("<td>").text(child.rate));
-//
-//         $("#employees").append(tr);
-//
-//     }
-// );
+
+var player1;
+var player2;
+// initial state
+var iAmPlayer1 = false;
+var iAmPlayer2 = false;
+
+var player1Ref = database.ref().child("players").child(1);
+var player2Ref = database.ref().child("players").child(2);
+
+player1Ref.on('value', function (snapshot) {
+    console.log("player1.value: " +  snapshot.key + ": " + JSON.stringify(snapshot.val()));
+
+    player1 = snapshot.val();
+    render();
+});
+
+player2Ref.on('value', function (snapshot) {
+
+    console.log("player2.value: " +  snapshot.key + ": " + JSON.stringify(snapshot.val()));
+
+    if (!player2 && snapshot.val()) {
+        iAmPlayer2 = true;
+    }
+    player2 = snapshot.val();
+
+    render();
+});
+
+function reset() {
+    database.ref().child("players").set({});
+}
+
+function addPlayer1(name) {
+    iAmPlayer1 = true;
+    database.ref().child("players").set(
+        {
+            1: {
+                losses: 0,
+                wins: 0,
+                name: name
+            }
+        }
+    );
+}
+
+
+function addPlayer2(name) {
+    iAmPlayer2 = true;
+    database.ref().child("players").update(
+        {
+            2:
+                {
+                    losses: 0,
+                    wins: 0,
+                    name: name
+                }
+        }
+    );
+}
+
+
+$("#start-button").click(function (event) {
+    console.log("player-name: " + $('#player-name').val());
+
+    var name = $('#player-name').val();
+    if (name) {
+        if (!player1) {
+            addPlayer1(name);
+        }
+        else {
+            addPlayer2(name);
+        }
+    }
+    render();
+});
+
+function renderStatusBar() {
+    if (player1 && player2) {
+        if (iAmPlayer1) {
+            $("#start-or-status")
+                .html($('<h1>')
+                    .addClass("text-center")
+                    .text("Hi " + player1.name + "!" + " You are Player 1"));
+        }
+        else if (iAmPlayer2) {
+            $("#start-or-status")
+                .html($('<h1>')
+                    .addClass("text-center")
+                    .text("Hi " + player1.name + "!" + " You are Player 1"));
+        }
+        else {
+            $("#start-or-status")
+                .html($('<h1>')
+                    .addClass("text-center")
+                    .text("Game between " + player1.name + " and " + player2.name + " in Progress"));
+        }
+    }
+    else {
+
+    }
+}
+
+function render() {
+
+    var gameInProgress = player1 && player2;
+
+    if (gameInProgress || iAmPlayer1 || iAmPlayer2) {
+        $("#start-row").hide();
+        $("#status-row").show();
+    }
+    else {
+        $("#start-row").show();
+        $("#status-row").hide();
+    }
+
+    if (gameInProgress) {
+        if (!player1.choice) {
+            if (iAmPlayer1) {
+                // It's my turn show choices
+                var p = $("#player1");
+                p.html($("<h2>").text(player1.name));
+                p.append($("<h2>").attr("id","rock").text("Rock"));
+                p.append($("<h2>").attr("id","paper").text("Paper"));
+                p.append($("<h2>").attr("id","scissors").text("Scissors"));
+                p.append($("<h3>").text("wins: " + player1.wins + " losses: " + player1.losses));
+            }
+            else {
+                // Change color on player1 border.
+            }
+        }
+        else if (!player2.choice) {
+            // waiting for player 2
+        }
+
+        // determine what stage of play
+        // This could be player-1 turn or player-2 turn
+        // Show choices for the player whose turn it is.
+
+        if (!player1.choice && iAmPlayer1) {
+            // player1 turn
+
+            var p = $("#player1");
+
+            p.html($("<h2>").text(player1.name));
+            p.html($("<h2>")).append($(""))
+
+            $("#player1").append($("<h3>").text("wins: " + player1.wins + " losses: " + player1.losses));
+        }
+    }
+}
