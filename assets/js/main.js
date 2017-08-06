@@ -56,6 +56,10 @@ function addPlayer1(name) {
             }
         }
     );
+    $("#status")
+        .html($('<h1>')
+            .addClass("text-center")
+            .text("Hi " + player1.name + "!" + " You are Player 1"));
 }
 
 
@@ -71,6 +75,10 @@ function addPlayer2(name) {
                 }
         }
     );
+    $("#status")
+        .html($('<h1>')
+            .addClass("text-center")
+            .text("Hi " + player2.name + "!" + " You are Player 2"));
 }
 
 
@@ -89,32 +97,6 @@ $("#start-button").click(function (event) {
     render();
 });
 
-function renderStatusBar() {
-    if (player1 && player2) {
-        if (iAmPlayer1) {
-            $("#start-or-status")
-                .html($('<h1>')
-                    .addClass("text-center")
-                    .text("Hi " + player1.name + "!" + " You are Player 1"));
-        }
-        else if (iAmPlayer2) {
-            $("#start-or-status")
-                .html($('<h1>')
-                    .addClass("text-center")
-                    .text("Hi " + player1.name + "!" + " You are Player 1"));
-        }
-        else {
-            $("#start-or-status")
-                .html($('<h1>')
-                    .addClass("text-center")
-                    .text("Game between " + player1.name + " and " + player2.name + " in Progress"));
-        }
-    }
-    else {
-
-    }
-}
-
 function render() {
 
     var gameInProgress = player1 && player2;
@@ -124,8 +106,9 @@ function render() {
         $("#status-row").show();
     }
     else {
-        $("#start-row").show();
+
         $("#status-row").hide();
+        $("#start-row").show();
     }
 
     if (gameInProgress) {
@@ -161,5 +144,7 @@ function render() {
 
             $("#player1").append($("<h3>").text("wins: " + player1.wins + " losses: " + player1.losses));
         }
+    }
+    else {
     }
 }
